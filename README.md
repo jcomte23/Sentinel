@@ -4,6 +4,36 @@
 
 <p align="center">Nuestro proyecto de gestión de parqueaderos en C# y .NET ofrece una solución completa para controlar entradas y salidas de vehículos, gestionar usuarios y ofrecer membresías. Con una estructura modular y funcionalidades escalables, nuestra aplicación proporciona una gestión eficiente y versátil para diferentes compañías.</p>
 
+## Conexion Base De Datos
+
+1. **Nombre:**
+   ```bash
+   bhqmuubhoqthasxmlwm2
+   ```
+
+2. **Host:**
+
+   ```bash
+   bhqmuubhoqthasxmlwm2-mysql.services.clever-cloud.com
+   ```
+
+2. **Usuario:**
+
+   ```bash
+   uozlqulxcqpc14qr
+   ```
+
+3. **Contraseña:**
+
+   ```bash
+   5IjlmA5yRH0UZWWR0BRr
+   ```
+
+4. **Puerto:**
+   ```bash
+   3306
+   ```
+
 ## Authors
 
 This project was created by **[Javier Cómbita Téllez](https://github.com/jcomte23)**, **[David Andres Monterrosa Gulfo](https://github.com/david01php)** and **[Henry Gabriel Mosquera Andrad](https://github.com/henryandalejandro)**. 
