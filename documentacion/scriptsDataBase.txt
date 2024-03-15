@@ -1,0 +1,193 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema sentinel
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema sentinel
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `sentinel` DEFAULT CHARACTER SET utf8mb4 ;
+USE `sentinel` ;
+
+-- -----------------------------------------------------
+-- Table `sentinel`.`tipo_documentos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sentinel`.`tipo_documentos` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NULL,
+  `abreviatura` VARCHAR(10) NULL,
+  `create_time` TIMESTAMP(255) NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` TIMESTAMP(255) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sentinel`.`tipos_usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sentinel`.`tipos_usuarios` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `create_time` TIMESTAMP(255) NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` TIMESTAMP(255) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sentinel`.`usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sentinel`.`usuarios` (
+  `id` INT NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `apellido` VARCHAR(30) NOT NULL,
+  `correo` VARCHAR(120) NOT NULL,
+  `documento` VARCHAR(45) NOT NULL,
+  `tipo_documentos_id` INT NOT NULL,
+  `direccion` VARCHAR(60) NULL,
+  `telefono` VARCHAR(45) NOT NULL,
+  `fecha_nacimiento` DATE NULL,
+  `tipos_usuarios_id` INT NOT NULL,
+  `create_time` TIMESTAMP(255) NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` TIMESTAMP(255) NULL,
+  INDEX `fk_USUARIOS_TIPO_DOCUMENTOS1_idx` (`tipo_documentos_id` ASC) VISIBLE,
+  PRIMARY KEY (`id`),
+  INDEX `fk_usuarios_tipos_usuarios1_idx` (`tipos_usuarios_id` ASC) VISIBLE,
+  CONSTRAINT `fk_USUARIOS_TIPO_DOCUMENTOS1`
+    FOREIGN KEY (`tipo_documentos_id`)
+    REFERENCES `sentinel`.`tipo_documentos` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_usuarios_tipos_usuarios1`
+    FOREIGN KEY (`tipos_usuarios_id`)
+    REFERENCES `sentinel`.`tipos_usuarios` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sentinel`.`tipo_vehiculos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sentinel`.`tipo_vehiculos` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NULL,
+  `create_time` TIMESTAMP(255) NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` TIMESTAMP(255) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sentinel`.`colores`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sentinel`.`colores` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NULL,
+  `create_time` TIMESTAMP(255) NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` TIMESTAMP(255) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sentinel`.`marcas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sentinel`.`marcas` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NULL,
+  `create_time` TIMESTAMP(255) NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` TIMESTAMP(255) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sentinel`.`vehiculos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sentinel`.`vehiculos` (
+  `id` INT NOT NULL,
+  `modelo` VARCHAR(45) NULL,
+  `placa` VARCHAR(10) NULL,
+  `tipo_vehiculo_id` INT NOT NULL,
+  `color_id` INT NOT NULL,
+  `marca_id` INT NOT NULL,
+  `create_time` TIMESTAMP(255) NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` TIMESTAMP(255) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_VEHICULOS_TIPO_VEHICULO1_idx` (`tipo_vehiculo_id` ASC) VISIBLE,
+  INDEX `fk_VEHICULOS_COLORES1_idx` (`color_id` ASC) VISIBLE,
+  INDEX `fk_VEHICULOS_MARCAS1_idx` (`marca_id` ASC) VISIBLE,
+  CONSTRAINT `fk_VEHICULOS_TIPO_VEHICULO1`
+    FOREIGN KEY (`tipo_vehiculo_id`)
+    REFERENCES `sentinel`.`tipo_vehiculos` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_VEHICULOS_COLORES1`
+    FOREIGN KEY (`color_id`)
+    REFERENCES `sentinel`.`colores` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_VEHICULOS_MARCAS1`
+    FOREIGN KEY (`marca_id`)
+    REFERENCES `sentinel`.`marcas` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sentinel`.`plazas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sentinel`.`plazas` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NULL,
+  `create_time` TIMESTAMP(255) NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` TIMESTAMP(255) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sentinel`.`historial_vehiculos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sentinel`.`historial_vehiculos` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `ingreso` VARCHAR(255) NOT NULL,
+  `salida` VARCHAR(255) NULL,
+  `vehiculos_id` INT NOT NULL,
+  `plazas_id` INT NOT NULL,
+  `comentarios` LONGTEXT NULL,
+  `usuarios_id` INT NOT NULL,
+  `create_time` TIMESTAMP(255) NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` TIMESTAMP(255) NULL,
+  PRIMARY KEY (`id`, `usuarios_id`),
+  INDEX `fk_historial_vehiculos_vehiculos1_idx` (`vehiculos_id` ASC) VISIBLE,
+  INDEX `fk_historial_vehiculos_plazas1_idx` (`plazas_id` ASC) VISIBLE,
+  INDEX `fk_historial_vehiculos_usuarios1_idx` (`usuarios_id` ASC) VISIBLE,
+  CONSTRAINT `fk_historial_vehiculos_vehiculos1`
+    FOREIGN KEY (`vehiculos_id`)
+    REFERENCES `sentinel`.`vehiculos` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_historial_vehiculos_plazas1`
+    FOREIGN KEY (`plazas_id`)
+    REFERENCES `sentinel`.`plazas` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_historial_vehiculos_usuarios1`
+    FOREIGN KEY (`usuarios_id`)
+    REFERENCES `sentinel`.`usuarios` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
